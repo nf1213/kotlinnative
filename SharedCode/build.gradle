@@ -1,4 +1,5 @@
 apply plugin: 'kotlin-multiplatform'
+apply plugin: 'kotlinx-serialization'
 
 kotlin {
     targets {
@@ -15,10 +16,21 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api 'org.jetbrains.kotlin:kotlin-stdlib-common'
+            implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.0.1"
+            implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.9.1"
+
+            implementation "io.ktor:ktor-client-core:1.0.1"
+            implementation "io.ktor:ktor-client-json:1.0.1"
         }
 
         androidMain.dependencies {
             api 'org.jetbrains.kotlin:kotlin-stdlib'
+            implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1"
+
+            implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.9.1"
+
+            implementation "io.ktor:ktor-client-core-jvm:1.0.1"
+            implementation "io.ktor:ktor-client-json-jvm:1.0.1"
         }
     }
 }

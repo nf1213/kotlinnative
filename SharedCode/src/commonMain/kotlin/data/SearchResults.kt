@@ -1,3 +1,7 @@
 package org.kotlin.mpp.mobile.data
 
-data class SearchResults(val search: List<Movie>)
+import kotlinx.serialization.Serializable
+
+// todo find a way to not capitalize val names
+@Serializable
+data class SearchResults(val Search: List<Movie>)
