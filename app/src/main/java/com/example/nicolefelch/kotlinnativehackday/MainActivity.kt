@@ -2,27 +2,26 @@ package com.example.nicolefelch.kotlinnativehackday
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import org.kotlin.mpp.mobile.api.MovieApi
-import org.kotlin.mpp.mobile.createApplicationScreenMessage
-import org.kotlin.mpp.mobile.data.SearchResults
+import org.kotlin.mpp.mobile.presentation.MainPresenter
+import org.kotlin.mpp.mobile.presentation.MainView
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MainView {
+
+    private val presenter: MainPresenter by lazy { MainPresenter(this, Dispatchers.Main) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val mainText = findViewById<TextView>(R.id.main_text)
-        mainText.text = createApplicationScreenMessage()
+        presenter.search("Frozen")
+    }
 
-        GlobalScope.launch(Dispatchers.Main) {
-            val searchResults: SearchResults = MovieApi().searchMovies("Frozen")
-            val firstResult = searchResults.Search[0]
-            mainText.text = "${firstResult.Title} ${firstResult.Year}"
+    override fun showMovie(displayText: String) {
+        main_text.text = displayText
+    }
 
-        }
+    override fun showError(error: Throwable) {
+        // todo show an error
     }
 }
