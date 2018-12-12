@@ -5,6 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlin.coroutines.CoroutineContext
 
+// from https://github.com/JetBrains/kotlinconf-app/blob/master/common/src/commonMain/kotlin/org/jetbrains/kotlinconf/presentation/CoroutinePresenter.kt
 open class CoroutinePresenter(
         private val mainContext: CoroutineContext, // TODO: Use Dispatchers.Main instead when it will be supported on iOS
         private val baseView: BaseView
