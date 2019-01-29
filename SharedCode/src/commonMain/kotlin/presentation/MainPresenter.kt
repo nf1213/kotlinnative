@@ -5,7 +5,7 @@ import org.kotlin.mpp.mobile.api.MovieApi
 import org.kotlin.mpp.mobile.data.SearchResults
 import kotlin.coroutines.CoroutineContext
 
-class MainPresenter(val view: MainView, private val uiContext: CoroutineContext): CoroutinePresenter(uiContext, view) {
+class MainPresenter(val view: MainView, uiContext: CoroutineContext): CoroutinePresenter(uiContext, view) {
     fun search(queryString: String) {
         launch {
             val searchResults: SearchResults = MovieApi().searchMovies(queryString)
