@@ -10,8 +10,8 @@ import UIKit
 import main
 
 class SearchViewController: UIViewController {
-
-    lazy var searchBar: UISearchBar = {
+    // MARK: - Properties
+    private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: view.bounds.width - 20, height: 30))
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         searchBar.enablesReturnKeyAutomatically = true
@@ -20,7 +20,7 @@ class SearchViewController: UIViewController {
         searchBar.searchBarStyle = .prominent
         return searchBar
     }()
-    lazy var displayLabel: UILabel = {
+    private lazy var displayLabel: UILabel = {
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: view.bounds.width - 20, height: 30))
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .darkText
@@ -31,35 +31,43 @@ class SearchViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        title = "Search Movies"
+
         view.addSubview(searchBar)
         view.addSubview(displayLabel)
-
-        navigationController?.navigationBar.backgroundColor = UIColor.lightText
-        title = "Search Movies"
 
         setUpConstraints()
     }
 
-    func setUpConstraints() {
+    // MARK: - View Setup
+    private func setUpConstraints() {
         NSLayoutConstraint.activate([
-            NSLayoutConstraint(item: searchBar, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: searchBar, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: displayLabel, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: displayLabel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: searchBar, attribute: .top, relatedBy: .equal, toItem: view, attribute: .topMargin, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: displayLabel, attribute: .top, relatedBy: .equal, toItem: searchBar, attribute: .bottom, multiplier: 1, constant: 16)
-        ])
+            searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            searchBar.leftAnchor.constraint(equalTo: view.leftAnchor),
+            searchBar.rightAnchor.constraint(equalTo: view.rightAnchor),
+            displayLabel.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 16),
+            displayLabel.leftAnchor.constraint(equalTo: view.leftAnchor),
+            displayLabel.rightAnchor.constraint(equalTo: view.rightAnchor)
+            ])
     }
-
 }
 
+// MARK: - UISearchBarDelegate
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let presenter = MainPresenter(view: self, uiContext: UI())
         presenter.search(queryString: searchBar.text ?? "")
     }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            displayLabel.text = ""
+        }
+    }
 }
 
+// MARK: - MainView
 extension SearchViewController: MainView {
     func showError(error: KotlinThrowable) {
         print("error: \(error.message ?? "")")
